@@ -3,10 +3,11 @@ var irc = require('irc');
 
 let IRC_CONFIG = {
   server: 'irc.snoonet.org',
-  nick: 'yoshibot',
-  channels: ['#ndlug']
+  nick: 'yoshibot-test',
+  channels: ['#bots-testing']
 };
 
+// TODO send to another file
 let parseOptions = (string) => {
   let args = string.split(' ');
   let resp = '';
@@ -29,33 +30,52 @@ let parseOptions = (string) => {
   return resp;
 }
 
-var client = new irc.Client(IRC_CONFIG.server, IRC_CONFIG.nick , {
-  channels: IRC_CONFIG.channels,
-  autoConnect: false,
-});
+class IrcBot {
+  constructor (IRC_CONFIG) {
+    this.channels = IRC_CONFIG.channels;
+    this.server = IRC_CONFIG.server;
+    this.nick = IRC_CONFIG.nick;
 
-client.addListener('message', function(from, to, msg) {
-  console.log(from, to, msg);
-  if (from === 'SILV3R' && msg.startsWith('y^')) {
-    client.say('yes master');
-    let commands = msg.slice(3);
-    let resp = parseOptions(commands);
-    client.say('#ndlug', resp);
-  }
-});
+    this.client = new irc.Client(IRC_CONFIG.server, IRC_CONFIG.nick , {
+      channels: IRC_CONFIG.channels,
+      autoConnect: false,
+    });
 
-client.addListener('error', function(msg) {
-  console.log(msg);
-});
+    this.client.addListener('message', (from, to, msg) => {
+      console.log(from, to, msg);
+      if (from === 'SILV3R' && msg.startsWith('y^')) {
+        this.sendMsg('yes master');
+        let commands = msg.slice(3);
+        let resp = parseOptions(commands);
+        this.sendMsg(resp);
+      };
+    });
 
-client.connect(3, function(rep) {
-  console.log(rep);
-  console.log('connected!');
-  client.join('#ndlug', function(input) {
-    console.log('joined ndlug');
-    client.say('nickserv', 'identify password');
-  });
-})
+    this.client.addListener('error', (msg) => {
+      console.log(msg);
+    });
+
+    this.client.connect(10, (rep) => {
+      console.log(rep);
+      console.log('connected!');
+      this.client.join('#bots-testing', (input) => {
+        console.log('joined channel');
+        this.client.say('nickserv', 'identify password');
+      });
+    });
+  };
+
+  sendMsg (msg) {
+    this.client.say('#bots-testing', msg);
+  };
+};
+
+var yoshi = new IrcBot(IRC_CONFIG);
+// It takes a bit for the connection to establish -> wait until its
+// ready to send msgs etc
+
+
+
 
 
 
