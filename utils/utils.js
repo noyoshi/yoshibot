@@ -5,19 +5,36 @@ let parseOptions = (string) => {
     let arg = args[0];
     switch (arg) {
       case 'joke':
-        resp = 'knock knokaer**4hdl1- bzzt bztt error';
+        resp = 'beboop knock knokaer**4hdl1- bzzt bztt error';
         break;
       case 'help':
-        resp = 'sorry bud i dont know either';
+        resp = 'beboop sorry bud i dont know either';
         break;
       default:
-        resp = 'say what?';
+        resp = 'beboop say what?';
         break;
     };
   } else {
-    resp = 'cant handle that :P';
+    resp = 'beboop I can only read one word at a time sorry :(';
   }
   return resp;
 }
 
-module.exports.parseOptions = parseOptions; 
+let logger = {
+  pm: (from, to, content) => {
+    console.log(`[IRC] <pm> from:${from} to:${to} content:${content}`);
+  },
+  msg: (from, channel, content) => {
+    console.log(`[IRC] <msg> channel:${channel} from:${from} content:${content}`);
+  },
+  action: (content) => {
+    console.log(`[ACTION] ${content}`);
+  },
+  response: (resp) => {
+    console.log('[RESPONSE] ', resp);
+  }
+};
+
+
+module.exports.parseOptions = parseOptions;
+module.exports.logger = logger;

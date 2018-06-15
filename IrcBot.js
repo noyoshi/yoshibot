@@ -25,11 +25,11 @@ class IrcBot {
     this.client.connect(10, (resp) => {
       let pass = process.env.BOT_PASS;
 
-      console.log('using password => ', pass);
-      console.log('server response => ', resp);
+      utils.logger.action(`logging in using password: ${pass}`);
+      utils.logger.response(resp);
       // TODO refactor how this joins channels?
       this.client.join(this.defaultChannel, (input) => {
-        this.client.say('nickserv', `identify ${pass}`);
+        this.sendPm('nickserv', `identify ${pass}`);
       });
     });
 
@@ -37,8 +37,9 @@ class IrcBot {
 
   addDefaultListeners () {
     this.client.addListener('message', (from, to, msg) => {
-      console.log(from, to, msg);
-      // if (from === this.admin && msg.startsWith('y^')) {
+      if (!to.startsWith('#')) return;
+      
+      utils.logger.msg(from, to, msg);
       if (msg.startsWith('y^')) {
         this.sendMsg('yes master');
         let commands = msg.slice(3);
@@ -46,11 +47,22 @@ class IrcBot {
         this.sendMsg(resp);
       };
     });
+
+    this.client.addListener('pm', (from, msg) => {
+      utils.logger.pm(from, this.nick, msg);
+      this.sendPm(from, 'Hi, I do not support PMs right now. Sorry!');
+    });
   };
 
   sendMsg (msg) {
     this.client.say(this.defaultChannel, msg);
+    utils.logger.msg(this.nick, this.defaultChannel, msg);
   };
+
+  sendPm (nick, msg) {
+    this.client.say(nick, msg);
+    utils.logger.pm(this.nick, nick, msg);
+  }
 };
 
 module.exports = IrcBot;

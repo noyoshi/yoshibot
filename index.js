@@ -1,5 +1,4 @@
 var IrcBot = require('./IrcBot');
-// TODO change to use the ES6 syntax for importing
 
 let IRC_CONFIG = {
   server: 'irc.snoonet.org',
