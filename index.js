@@ -56,11 +56,15 @@ class IrcBot {
     });
 
     this.client.connect(10, (rep) => {
+      let pass = process.env.BOT_PASS;
+      console.log(pass);
       console.log(rep);
       console.log('connected!');
       this.client.join('#bots-testing', (input) => {
+        let cmd = `identify ${pass}`;
+        console.log('identifying using ', cmd);
         console.log('joined channel');
-        this.client.say('nickserv', 'identify password');
+        this.client.say('nickserv', `identify ${pass}`);
       });
     });
   };
