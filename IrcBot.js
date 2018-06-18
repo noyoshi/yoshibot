@@ -44,8 +44,10 @@ class IrcBot {
   };
 
   addDefaultListeners () {
-    this.client.addListener('message', (from, to, msg) => {
+    this.client.addListener('message', (from, to, message) => {
       if (!to.startsWith('#')) return;
+      
+      let msg = message.trim();
 
       utils.logger.msg(from, to, msg);
 
