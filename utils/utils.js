@@ -1,19 +1,18 @@
+var fs = require('fs');
+
 let parseOptions = (string) => {
   let args = string.split(' ');
   let resp = '';
   if (args.length === 1) {
     let arg = args[0];
-    switch (arg) {
-      case 'joke':
-        resp = 'beboop knock knokaer**4hdl1- bzzt bztt error';
-        break;
-      case 'help':
-        resp = 'beboop sorry bud i dont know either';
-        break;
-      default:
-        resp = 'beboop say what?';
-        break;
+    let contents = fs.readFileSync("./utils/responses.json");
+    let jsonContent = JSON.parse(contents);
+    if (!jsonContent.hasOwnProperty(arg)) {
+      resp = `unknown command ${arg}`;
+    } else {
+      resp = jsonContent[arg];
     };
+
   } else {
     resp = 'beboop I can only read one word at a time sorry :(';
   }
@@ -26,6 +25,9 @@ let logger = {
   },
   msg: (from, channel, content) => {
     console.log(`[IRC] <msg> channel:${channel} from:${from} content:${content}`);
+  },
+  mention: (from, channel, content) => {
+    console.log(`[IRC] <mention> channel:${channel} from:${from} content:${content}`);
   },
   action: (content) => {
     console.log(`[ACTION] ${content}`);
