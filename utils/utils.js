@@ -1,7 +1,6 @@
 var fs = require('fs');
 
-let parseOptions = (string) => {
-  let args = string.split(' ');
+let parseOptions = (args) => {
   let resp = '';
   if (args.length === 1) {
     let arg = args[0];

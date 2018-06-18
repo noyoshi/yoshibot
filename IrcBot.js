@@ -46,18 +46,18 @@ class IrcBot {
   addDefaultListeners () {
     this.client.addListener('message', (from, to, message) => {
       if (!to.startsWith('#')) return;
-      
+
       let msg = message.trim();
 
       utils.logger.msg(from, to, msg);
 
       let splitMsg = msg.split(' ');
-      if (msg.indexOf(this.admin) >= 0 || msg.indexOf(this.admin + ":") >= 0) {
+      if (splitMsg.indexOf(this.admin) >= 0 || splitMsg.indexOf(this.admin + ":") >= 0) {
         utils.logger.mention(from, to, msg);
       };
 
       if (msg.startsWith('y^')) {
-        let commands = msg.slice(3);
+        let commands = splitMsg.splice(0, 1);
         let resp = utils.parseOptions(commands);
         this.sendMsg(resp);
       };
