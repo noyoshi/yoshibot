@@ -7,7 +7,7 @@ let parseOptions = (args) => {
     let arg = args[0];
     let contents = fs.readFileSync("./utils/responses.json");
     let jsonContent = JSON.parse(contents);
-    let commandList = Object.keys(contnets);
+    let commandList = Object.keys(contents);
     if (!jsonContent.hasOwnProperty(arg)) {
       resp = `unknown command ${arg}`;
     } else if (arg = "list"){ //btw theres proabbly a better way to do this
