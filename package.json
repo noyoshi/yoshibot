@@ -13,7 +13,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "irc": "^0.5.2"
+    "irc": "^0.5.2",
+    "twilio": "^3.17.3"
   },
   "dependencies": {
     "nodemon": "^1.17.5"

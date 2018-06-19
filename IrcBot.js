@@ -1,5 +1,7 @@
 var irc = require('irc');
 var utils = require('./utils/utils');
+var twilio = require('twilio');
+
 
 class IrcBot {
   constructor (config) {
@@ -54,11 +56,26 @@ class IrcBot {
       let splitMsg = msg.split(' ');
       if (splitMsg.indexOf(this.admin) >= 0 || splitMsg.indexOf(this.admin + ":") >= 0) {
         utils.logger.mention(from, to, msg);
+        // Wttr.in, twilio,
+
+        let accountSID = process.env.TWILIO_SID;
+        let accountToken = process.env.TWILIO_AUTH_TOKEN;
+        // console.log(accountSID, accountToken);
+        let client = new twilio(accountSID, accountToken);
+
+        client.messages.create({
+          body: `MSG from ${from}: ${msg}`,
+          to: "+17857668047",
+          from: "+19132988636"
+        })
+        .then((message) => console.log(`MESSAGE SENT WITH SID: ${message}`));
+
       };
 
       if (msg.startsWith('y^')) {
-        let commands = splitMsg.splice(0, 1);
-        let resp = utils.parseOptions(commands);
+        let _ = splitMsg.splice(0, 1);
+        console.log(splitMsg);
+        let resp = utils.parseOptions(splitMsg);
         this.sendMsg(resp);
       };
     });
