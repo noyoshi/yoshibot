@@ -10,7 +10,7 @@ let parseOptions = (args) => {
     let commandList = Object.keys(contents);
     if (!jsonContent.hasOwnProperty(arg)) {
       resp = `unknown command ${arg}`;
-    } else if (arg = "list"){ //btw theres proabbly a better way to do this
+    } else if (arg === "list"){ //btw theres proabbly a better way to do this
       resp = commandList //node is effed up man
     } else {
       resp = jsonContent[arg];
