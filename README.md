@@ -13,3 +13,7 @@
 - [ ] Prevent yoshibot from responding to old messages when he joins
 - [ ] Refactor him into a class
 - [ ] Refactor everything :o
+- [ ] Add unit testing using `jest`
+- [ ] Add CI using Travic CI or Buildkite 
+- [ ] Add CD using docker if you are feeling ambitious 
+- [ ] Make adding new commands and modules easier 
