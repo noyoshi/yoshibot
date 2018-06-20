@@ -11,7 +11,7 @@ let parseOptions = (args) => {
     if (!jsonContent.hasOwnProperty(arg)) {
       resp = `unknown command ${arg}`;
     } else if (arg === "list"){ //btw theres proabbly a better way to do this
-      resp = commandList //node is effed up man
+      resp = commandList.join(' '); //node is effed up man
     } else {
       resp = jsonContent[arg];
     };
